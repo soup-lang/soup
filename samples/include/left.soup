@@ -1,0 +1,7 @@
+include "samples/include/right.soup" as right
+include "samples/include/nodep.soup" as nodep
+
+export func foo()
+    return right.foo() + 1
+
+export bar: nodep.ep.bar

@@ -1,0 +1,21 @@
+include 'misc.soup' as misc
+
+console.log(JSON.stringify({
+    name: 'Soup',
+    version: misc.version,
+    main: 'soup-recur.js',
+    license: 'MIT',
+    files: ['soup', 'soup-recur.js'],
+    preferGlobal: true,
+    bin: {soup: './soup'},
+    repository: {
+        type: 'git',
+        url: 'https://github.com/soup-lang/soup',
+    },
+    dependencies: {
+        'optparse': '>=1.0.0',
+    },
+    devDependencies: {
+        'mocha': '>=2.0.0',
+    },
+}))

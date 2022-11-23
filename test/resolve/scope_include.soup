@@ -1,0 +1,125 @@
+include 'errors.soup' as errors
+include 'test/assert.soup' as assert
+include 'test/utils.soup' as utils
+include 'parse/build.soup' as parse
+include 'resolve/scope.soup' as scope
+
+class FakeScope: scope.GlobalScope
+    ctor(sources) super()
+        this.sources: sources
+
+    func canonicalPath(path, includePos, %%)
+        return path
+
+    func parseFile(path, includePos, %%)
+        if this.sources.hasOwnProperty(path)
+            r: parse.build(this.sources[path], path)
+            if errors.count() != 0
+                console.error('>>> Unexpected Errors: when parsing', path)
+                console.error(errors.deliver())
+                console.error('<<< End of Unexpected Errors')
+                assert.ok(false)
+            return r
+        console.error('No such source', path)
+        assert.ok(false)
+
+func buildAndCompile(entry, otherSources, %%)
+    g: FakeScope(otherSources)
+    c: utils.buildNoError(entry).compile(g, %%)
+    return g.deliver(%%)
+
+export func run(%%)
+    describe('scope include', %)
+    if true
+        it('unresolvable deps error', %done)
+        buildAndCompile('''
+            include 'f.soup' as f
+            console.log(f.fff())
+        ''', {
+            'f.soup': '''
+                include 'g.soup' as g
+
+                export func fff()
+                    return g.ggg()
+            ''',
+            'g.soup': '''
+                include 'f.soup' as f
+
+                export func ggg()
+                    return f.fff()
+            ''',
+        }, %%)
+        assert.deepEq([{
+            type: 'DepenedenciesUnresolvable',
+            circularDeps: ['f.soup', 'g.soup'],
+        }], errors.deliver())
+
+        buildAndCompile('''
+            include 'g.soup' as g
+            console.log(g.ggg())
+        ''', {
+            'f.soup': '''
+                include 'g.soup' as g
+
+                export func fff()
+                    return g.ggg()
+            ''',
+            'g.soup': '''
+                include 'f.soup' as f
+
+                export func ggg()
+                    return f.fff()
+            ''',
+        }, %%)
+        assert.deepEq([{
+            type: 'DepenedenciesUnresolvable',
+            circularDeps: ['g.soup', 'f.soup'],
+        }], errors.deliver())
+
+        buildAndCompile('''
+            include 'f.soup' as f
+            console.log(f.fff())
+        ''', {
+            'f.soup': '''
+                include 'g.soup' as g
+
+                export func fff()
+                    return g.ggg()
+            ''',
+            'g.soup': '''
+                include 'h.soup' as h
+
+                export func ggg()
+                    return h.hhh()
+            ''',
+            'h.soup': '''
+                include 'g.soup' as g
+
+                export func hhh()
+                    return g.ggg()
+            ''',
+        }, %%)
+        assert.deepEq([{
+            type: 'DepenedenciesUnresolvable',
+            circularDeps: ['g.soup', 'h.soup'],
+        }], errors.deliver())
+        done()
+
+    if true
+        it('export and include literal', %done)
+        result: buildAndCompile('''
+            include 'x.soup' as x
+            console.log(x.ONE, x.ZERO)
+        ''', {
+            'x.soup': '''
+                export ZERO: 0
+                export ONE: 1
+            ''',
+        }, %%)
+        assert.deepEq([], errors.deliver())
+        assert.eq(2, result.stmts.length)
+        console_log: result.stmts[1].expr
+        assert.eq(2, console_log.args.length)
+        assert.eq(1, console_log.args[0].value)
+        assert.eq(0, console_log.args[1].value)
+        done()

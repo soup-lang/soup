@@ -1,0 +1,28 @@
+{
+  "name": "soup-lang",
+  "version": "1.0.0",
+  "description": "Simple language that compiles to JS and soon C",
+  "main": "soup.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/soup-lang/soup.git"
+  },
+  "author": "Soup Developers",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/soup-lang/soup/issues"
+  },
+  "homepage": "https://github.com/soup-lang/soup#readme",
+  "dependencies": {
+    "optparse": "^1.0.5"
+  },
+  "devDependencies": {
+    "mocha": "^10.1.0"
+  }
+}

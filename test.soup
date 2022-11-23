@@ -1,0 +1,50 @@
+if true
+    describe('parse', %)
+    if true
+        include 'test/parse/tokenize.soup' as t
+        t.run(%%)
+    if true
+        include 'test/parse/expr_automations.soup' as t
+        t.run()
+    if true
+        include 'test/parse/stmt_automations.soup' as t
+        t.run()
+    if true
+        include 'test/parse/sub_block_automations.soup' as t
+        t.run()
+    if true
+        include 'test/parse/expressions.soup' as t
+        t.run()
+    if true
+        include 'test/parse/func.soup' as t
+        t.run()
+    if true
+        include 'test/parse/class.soup' as t
+        t.run()
+
+if true
+    describe('resolve', %)
+    if true
+        include 'test/resolve/symbol_table.soup' as t
+        t.run()
+    if true
+        include 'test/resolve/literal.soup' as t
+        t.run()
+    if true
+        include 'test/resolve/statements.soup' as t
+        t.run(%%)
+    if true
+        include 'test/resolve/pipeline.soup' as t
+        t.run(%%)
+    if true
+        include 'test/resolve/function.soup' as t
+        t.run(%%)
+    if true
+        include 'test/resolve/class.soup' as t
+        t.run(%%)
+    if true
+        include 'test/resolve/macros.soup' as t
+        t.run(%%)
+    if true
+        include 'test/resolve/scope_include.soup' as t
+        t.run(%%)

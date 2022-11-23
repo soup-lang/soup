@@ -1,0 +1,15 @@
+ffs: require('./ffs')
+console.log(ffs.readMultiple(['a.txt', 'b.txt', 'c.txt'], %%))
+
+ffr: require('./ffr')
+console.log(ffr.readMultiple(['a.txt', 'b.txt', 'c.txt'], %%))
+
+console.log(ffr.m, ffr.n.n)
+
+func return_m()
+    return 'm'
+
+func return_n()
+    return 'n'
+
+console.log(ffr[return_m()], ffr[return_n()][return_n()])

@@ -1,0 +1,6 @@
+samples/errors/inv-chars.soup:1
+    illegal token: `
+samples/errors/inv-chars.soup:2
+    illegal token: ?
+samples/errors/inv-chars.soup:4
+    illegal token: ;

@@ -1,0 +1,2 @@
+samples/errors/init-super-with-super.soup:13
+    `super` not in member function or constructor

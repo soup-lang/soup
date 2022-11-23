@@ -1,0 +1,8 @@
+samples/errors/bad-indent.soup:3
+    invalid indentation
+samples/errors/bad-indent.soup:5
+    invalid indentation
+samples/errors/bad-indent.soup:6
+    invalid indentation
+samples/errors/bad-indent.soup:8
+    invalid indentation

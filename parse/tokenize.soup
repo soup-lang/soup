@@ -1,0 +1,282 @@
+include 'errors.soup' as errors
+include 'misc.soup' as misc
+include 'parse/expressions.soup' as exprs
+include 'parse/macros.soup' as macros
+
+class Pattern
+    ctor(pattern, accept, ignore, stop)
+        this.pattern: pattern
+        this.accept: accept
+        this.ignore: ignore
+        this.stop: stop
+
+    func match(string)
+        r: this.pattern.exec(string)
+        return r[0] if r else null
+
+PATTERNS: [
+    Pattern(/^[ \t\r]+/, 'space', true),
+    Pattern(/^#[^\n]*\n/, 'comment', true, true),
+    Pattern(/^#[^\n]*$/, 'comment', true, true),
+    Pattern(/^\n/, 'eol', true, true),
+
+    Pattern(/^[0-9][0-9_]*\.([0-9][0-9_]*)?/, 'number'),
+    Pattern(/^\.[0-9][0-9_]*/, 'number'),
+    Pattern(/^[0-9][0-9_]*/, 'number'),
+    Pattern(/^[0-9]x[0-9a-fA-F_]*/, 'number'),
+    Pattern(/^[_a-zA-Z][_a-zA-Z0-9]*/, 'ident'),
+    Pattern(/^:::([^:]|:[^:]|::[^:])*:::/, 'literal_text'),
+    Pattern(/^"""((\\.|[^\\"])|\"[^\"]|\"\"[^\"])*"""/, 'triple_quoted_string'),
+    Pattern(/^'''((\\.|[^\\'])|\'[^\']|\'\'[^\'])*'''/, 'triple_quoted_string'),
+    Pattern(/^"(\\.|[^\\"])*"/, 'string'),
+    Pattern(/^'(\\.|[^\\'])*'/, 'string'),
+    Pattern(/^[\/][^ \n](\\.|[^\\\/])*[\/][a-zA-Z]*/, 'regex'),
+
+    Pattern(/^\+\+/, 'operator'),
+    Pattern(/^<</, 'operator'),
+    Pattern(/^>>>/, 'operator'),
+    Pattern(/^>>/, 'operator'),
+    Pattern(/^<=/, 'operator'),
+    Pattern(/^>=/, 'operator'),
+    Pattern(/^!=/, 'operator'),
+    Pattern(/^&&/, 'operator'),
+    Pattern(/^\|\|/, 'operator'),
+
+    Pattern(/^\|[:?]/, 'pipe_sep'),
+    Pattern(/^[$]element/, 'pipe_element'),
+    Pattern(/^[$]index/, 'pipe_index'),
+    Pattern(/^[$]i/, 'pipe_index'),
+    Pattern(/^[$]key/, 'pipe_key'),
+    Pattern(/^[$]k/, 'pipe_key'),
+    Pattern(/^[$]result/, 'pipe_result'),
+    Pattern(/^[$]r/, 'pipe_result'),
+    Pattern(/^[$]/, 'pipe_element'),
+    Pattern(/^%%/, 'regular_async_param'),
+    Pattern(RegExp('^[-+*/%!=<>|~&^]'), 'operator'),
+
+    Pattern(/^\./, 'dot'),
+    Pattern(/^,/, 'comma'),
+    Pattern(/^:/, 'colon'),
+
+    Pattern(/^\(/, 'openparen'),
+    Pattern(/^\)/, 'closeparen'),
+    Pattern(/^\[/, 'openbracket'),
+    Pattern(/^\]/, 'closebracket'),
+    Pattern(/^\{/, 'openbrace'),
+    Pattern(/^\}/, 'closebrace'),
+]
+
+export ALL_TOKEN_TYPES: PATTERNS |: $.accept
+
+class Token
+    ctor(pos, image)
+        this.pos: pos
+        this.image: image
+
+    func act(stack)
+        throw 'abstract Token.act'
+
+    func unexpected()
+        errors.UnexpectedToken(this.pos, this.image)
+
+export class TypedToken: Token
+    ctor(pos, image, type) super(pos, image)
+        this.type: type
+
+    func act(stack)
+        stack.nextToken(this)
+
+class FactorToken: Token
+    ctor(pos, image, expr) super(pos, image)
+        this.expr: expr
+
+    func act(stack)
+        stack.nextFactor(this)
+
+class NulToken: Token
+    ctor(pos, image) super(pos, image)
+    func act(stack)
+
+func comprehenseString(s)
+    escaper: {
+        'n': '\n',
+        'r': '\r',
+        't': '\t',
+    }
+
+    func c(index, r)
+        if index = s.length
+            return r
+        if s[index] = '\\'
+            e: s[index + 1]
+            return c(index + 2, r + (escaper[e] if escaper[e] else e))
+        return c(index + 1, r + s[index])
+    return c(0, '')
+
+LITERAL_TEXT_EDITS: {
+    left: {
+        keep: (lines): lines,
+        trim: (lines): lines |: $.trimLeft(),
+        unindent: (lines):
+            minIndent: Math.min.apply(null, lines |: $.search(/\S/))
+            return lines |: $[minIndent,]
+    },
+    right: {
+        keep: (lines): lines,
+        trim: (lines): lines |: $.trimRight(),
+    },
+    eol: {
+        keep: '\n',
+        trim: '',
+        space: ' ',
+    },
+}
+
+func comprehenseText(pos, lines)
+    if lines.length = 1
+        errors.InvalidSingleLineLiteralText(pos)
+        return ''
+    if lines[lines.length - 1].trim().length != 0
+        errors.InvalidLiteralTextEnd(pos)
+        return ''
+    edits: {
+        left: LITERAL_TEXT_EDITS.left.keep,
+        right: LITERAL_TEXT_EDITS.right.keep,
+        eol: LITERAL_TEXT_EDITS.eol.keep,
+    }
+    editsProps: {}
+
+    lines[0].split(' ') |:
+        if $.length = 0
+            continue
+        kv: $.split(':')
+        if kv.length != 2
+            errors.InvalidLiteralProperty(pos, $)
+            return ''
+
+        key: kv[0].trim()
+        value: kv[1].trim()
+
+        if editsProps owns key
+            errors.DupLiteralTextProperty(pos, key)
+        editsProps[key]: true
+
+        ifnot LITERAL_TEXT_EDITS owns key
+            errors.NoSuchLiteralProperty(pos, key)
+            return ''
+
+        ifnot LITERAL_TEXT_EDITS[key] owns value
+            errors.InvalidLiteralPropertyValue(pos, key, value)
+            return ''
+
+        edits[key]: LITERAL_TEXT_EDITS[key][value]
+
+    return edits.right(edits.left(lines[1, -1])).join(edits.eol)
+
+KEYWORDS: {
+    'if': true,
+    'else': true,
+    'ifnot': true,
+    'for': true,
+    'break': true,
+    'continue': true,
+    'try': true,
+    'catch': true,
+    'throw': true,
+    'func': true,
+    'return': true,
+    'class': true,
+    'super': true,
+    'ctor': true,
+    'extern': true,
+    'export': true,
+    'enum': true,
+    'include': true,
+    'delete': true,
+}
+
+RESERVED: {
+    'from': true,
+    'elif': true,
+    'while': true,
+    'gen': true,
+    'yield': true,
+    'with': true,
+    'finally': true,
+    'switch': true,
+    'case': true,
+}
+
+OPERATORS: {
+    'typeof': true,
+    'owns': true,
+    'instanceof': true,
+}
+
+FACTOR_TYPES: {
+    number: (pos, image): FactorToken(pos, image, exprs.Num(pos, eval(image.replace(/_/g, '')))),
+    string: (pos, image): FactorToken(pos, image, exprs.Str(pos, comprehenseString(image[1, -1]))),
+    literal_text: (pos, image): FactorToken(
+                pos, image, exprs.Str(pos, comprehenseText(pos, image[3, -3].split('\n')))),
+    triple_quoted_string: (pos, image): FactorToken(
+                pos, image, exprs.Str(pos, comprehenseString(image[3, -3]))),
+    regex: (pos, image):
+        try
+            return FactorToken(pos, image, exprs.Regex(pos, eval(image)))
+        catch e
+            errors.InvalidRegExp(pos, image, e)
+            return FactorToken(pos, image, exprs.Empty(pos))
+    ,
+    ident: (pos, image):
+        if image = 'this'
+            return FactorToken(pos, image, exprs.This(pos))
+        if OPERATORS owns image
+            return TypedToken(pos, image, 'operator')
+        if image = 'true' || image = 'false'
+            return FactorToken(pos, image, exprs.Bool(pos, image = 'true'))
+        if KEYWORDS owns image
+            return TypedToken(pos, image, image)
+        if RESERVED owns image
+            errors.UseReserved(pos, image)
+        if image.length > 4 && image[, 2] = '__' && image[-2, ] = '__'
+            return FactorToken(pos, image, macros.make(pos, image))
+        return FactorToken(pos, image, exprs.Identifier(pos, image))
+    ,
+    pipe_element: (pos, image): FactorToken(pos, image, exprs.PipeElement(pos)),
+    pipe_index: (pos, image): FactorToken(pos, image, exprs.PipeIndex(pos)),
+    pipe_key: (pos, image): FactorToken(pos, image, exprs.PipeKey(pos)),
+    pipe_result: (pos, image): FactorToken(pos, image, exprs.PipeResult(pos)),
+    regular_async_param: (pos, image): FactorToken(pos, image, exprs.RegularAsyncParam(pos)),
+}
+
+func makeToken(pos, image, type)
+    f: FACTOR_TYPES[type]
+    return f(pos, image) if f else TypedToken(pos, image, type)
+
+export func tokenize(source, file, line)
+    func nextToken(string, file, lineno)
+        pos: misc.pos(file, lineno)
+        PATTERNS |:
+            r: $.match(string)
+            if r != null
+                ifnot $.ignore
+                    tokens.push(makeToken(pos, r, $.accept))
+                return {len: r.length, stop: $.stop, lineInc: (r |? $ = '\n').length}
+        errors.IllegalToken(pos, string[0])
+        return {len: 1, stop: false, lineInc: 0}
+
+    func tknz(source, lineInc)
+        if source.length = 0
+            return {tokens: tokens, lineInc: lineInc, source: ''}
+        t: nextToken(source, file, line + lineInc)
+        restSrc: source[t.len,]
+        if t.stop
+            return {
+                tokens: tokens,
+                lineInc: lineInc + t.lineInc,
+                source: restSrc,
+            }
+        return tknz(restSrc, lineInc + t.lineInc)
+
+    tokens: []
+    return tknz(source, 0)

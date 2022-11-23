@@ -1,0 +1,45 @@
+include 'resolve/scope.soup' as sc
+include 'backend_js/function.soup' as backend
+include 'backend_js/expressions.soup' as backend_exprs
+
+export class SyncFunc
+    ctor(pos, name, params, body)
+        this.pos: pos
+        this.name: name
+        this.params: params
+        this.body: body
+
+    func compile(scope, allowSuper, %%)
+        params_body: this._compileParamsBody(scope, allowSuper, scope.sym().className(), %%)
+        return backend.SyncFunction(scope.sym().compileRef(this.pos, this.name), this.params,
+                                    params_body[1])
+
+    func compileAsClassMember(scope, allowSuper, clsName, %%)
+        params_body: this._compileParamsBody(scope, allowSuper, clsName, %%)
+        return backend.SyncLambda(params_body[0], params_body[1], false)
+
+    func _makeBodyScope(scope, allowSuper, clsName)
+        return sc.SyncFuncScope(this.pos, scope, this.params, allowSuper, this.name, clsName)
+
+    func _compileParamsBody(scope, allowSuper, clsName, %%)
+        bodyScope: this._makeBodyScope(scope, allowSuper, clsName)
+        this.body.compile(bodyScope, %%)
+        params: this.params |: bodyScope.sym().compileRef(this.pos, $)
+        return [params, bodyScope.deliver(%%)]
+
+export class RegularAsyncFunc: SyncFunc
+    ctor(pos, name, params, asyncIndex, body) super(pos, name, params, body)
+        this.asyncIndex: asyncIndex
+
+    func compile(scope, allowSuper, %%)
+        params_body: this._compileParamsBody(scope, allowSuper, scope.sym().className(), %%)
+        return backend.RegularAsyncFunction(
+            scope.sym().compileRef(this.pos, this.name), this.params,
+            this.asyncIndex, params_body[1])
+
+    func compileAsClassMember(scope, allowSuper, clsName, %%)
+        params_body: this._compileParamsBody(scope, allowSuper, clsName, %%)
+        return backend.RegularAsyncLambda(params_body[0], this.asyncIndex, params_body[1])
+
+    func _makeBodyScope(scope, allowSuper, clsName)
+        return sc.AsyncFuncScope(this.pos, scope, this.params, allowSuper, this.name, clsName)

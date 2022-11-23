@@ -1,0 +1,6 @@
+tmp.*
+soup
+node_modules
+package-lock.json
+*.js
+!soup.js

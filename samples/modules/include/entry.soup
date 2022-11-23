@@ -1,0 +1,18 @@
+include 'samples/modules/include/ffs.soup' as ffs
+console.log('== ffs included')
+console.log(ffs.readMultiple(['a.txt', 'b.txt', 'c.txt'], %%))
+console.log(ffs.ZERO, ffs.ONE)
+
+include 'samples/modules/include/ffr.soup' as ffr
+console.log('== ffr included')
+console.log(ffr.readMultiple(['a.txt', 'b.txt', 'c.txt'], %%))
+
+console.log(ffr.m, ffr.n.n)
+
+func return_m()
+    return 'm'
+
+func return_n()
+    return 'n'
+
+console.log(ffr[return_m()], ffr[return_n()][return_n()])

@@ -1,0 +1,2 @@
+samples/errors/invalid-for-range-head.soup:1
+    unexpected token: 10
