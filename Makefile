@@ -35,13 +35,6 @@ sample-test:all
 	$(call _sampletest,soup)
 	$(call _sampletest,node ./soup.js)
 
-npm:recursive
-	node ./soup-recur.js $(COMPILE_FLAGS) -i npm.soup -o npm.js
-	echo "#!/usr/bin/env node" > soup
-	echo "require('./soup-recur')" >> soup
-	node npm.js > package.json
-
 clean:
 	find -type f -name "*.js" -exec rm {} \;
-	rm -f package.json
-	rm -f soup
+	rm -f soup.js
