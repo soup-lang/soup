@@ -1,7 +1,7 @@
-# Soup
+# 🍲 Soup
 
-language for the web
+language for the web & nodejs
 
-# Building soup.js
+## 🔨 Building soup.js
 
 just run `make` and use `./soup.js` 

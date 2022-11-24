@@ -35,6 +35,3 @@ sample-test:all
 	$(call _sampletest,soup)
 	$(call _sampletest,node ./soup.js)
 
-clean:
-	find -type f -name "*.js" -exec rm {} \;
-	rm -f soup.js

@@ -4,7 +4,7 @@ console.log(JSON.stringify({
     name: 'Soup',
     version: misc.version,
     main: 'soup-recur.js',
-    license: 'MIT',
+    license: 'ISC',
     files: ['soup', 'soup-recur.js'],
     preferGlobal: true,
     bin: {soup: './soup'},
