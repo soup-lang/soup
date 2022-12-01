@@ -1,6 +1,6 @@
 include 'errors.soup' as errors
 include 'test/assert.soup' as assert
-include 'test/souplib/resolve/utils.soup' as utils
+include 'test/resolve/utils.soup' as utils
 include 'souplib/resolve/scope.soup' as scope
 
 buildAndCompile: utils.buildAndCompile
