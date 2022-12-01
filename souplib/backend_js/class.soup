@@ -1,5 +1,5 @@
-include 'backend_js/statements.soup' as base
-include 'backend_js/mangle.soup' as mangle
+include 'souplib/backend_js/statements.soup' as base
+include 'souplib/backend_js/mangle.soup' as mangle
 
 CTOR_TEMPL: (
     'function #NAME#(#PARAMS#) {'

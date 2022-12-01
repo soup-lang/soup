@@ -1,9 +1,9 @@
 include 'errors.soup' as errors
-include 'parse/statements.soup' as base
-include 'parse/expressions.soup' as exprs
-include 'parse/class.soup' as cls
-include 'parse/automation.soup' as am
-include 'resolve/statements.soup' as resolve
+include 'souplib/parse/statements.soup' as base
+include 'souplib/parse/expressions.soup' as exprs
+include 'souplib/parse/class.soup' as cls
+include 'souplib/parse/automation.soup' as am
+include 'souplib/resolve/statements.soup' as resolve
 
 class PlaceholderStatement: base.Statement
     ctor(pos) super(pos)

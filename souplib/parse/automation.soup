@@ -1,9 +1,9 @@
 include 'errors.soup' as errors
-include 'parse/tokenize.soup' as tokens
-include 'parse/expressions.soup' as exprs
-include 'parse/statements.soup' as stmts
-include 'parse/function.soup' as fn
-include 'parse/class.soup' as cls
+include 'souplib/parse/tokenize.soup' as tokens
+include 'souplib/parse/expressions.soup' as exprs
+include 'souplib/parse/statements.soup' as stmts
+include 'souplib/parse/function.soup' as fn
+include 'souplib/parse/class.soup' as cls
 
 class Automation
     ctor(stack)

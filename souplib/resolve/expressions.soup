@@ -1,10 +1,10 @@
 include 'misc.soup' as misc
 include 'errors.soup' as errors
 include 'language.soup' as lang
-include 'resolve/scope.soup' as sc
-include 'backend_js/expressions.soup' as backend
-include 'backend_js/statements.soup' as backend_stmts
-include 'backend_js/function.soup' as backend_funcs
+include 'souplib/resolve/scope.soup' as sc
+include 'souplib/backend_js/expressions.soup' as backend
+include 'souplib/backend_js/statements.soup' as backend_stmts
+include 'souplib/backend_js/function.soup' as backend_funcs
 
 export class Expression
     ctor(pos)

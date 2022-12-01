@@ -1,6 +1,6 @@
 include 'errors.soup' as errors
 include 'globals.soup' as g
-include 'resolve/statements.soup' as resolve
+include 'souplib/resolve/statements.soup' as resolve
 
 export class Statement
     ctor(pos)

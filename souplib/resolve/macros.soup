@@ -1,6 +1,6 @@
 include 'errors.soup' as errors
 include 'globals.soup' as g
-include 'resolve/expressions.soup' as base
+include 'souplib/resolve/expressions.soup' as base
 
 class Macro: base.AtomicItem
     ctor(pos) super(pos)

@@ -1,7 +1,7 @@
 include 'errors.soup' as errors
 include 'test/assert.soup' as assert
 include 'test/utils.soup' as utils
-include 'resolve/scope.soup' as scope
+include 'souplib/resolve/scope.soup' as scope
 
 export func buildAndCompile(source, %%)
     g: scope.GlobalScope()

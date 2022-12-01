@@ -1,4 +1,4 @@
-include 'backend_js/mangle.soup' as mangle
+include 'souplib/backend_js/mangle.soup' as mangle
 
 export class Statement
     func mayThrow()

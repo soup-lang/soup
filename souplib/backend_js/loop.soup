@@ -1,7 +1,7 @@
-include 'backend_js/expressions.soup' as base_exprs
-include 'backend_js/statements.soup' as base_stmts
-include 'backend_js/methods.soup' as methods
-include 'backend_js/mangle.soup' as mangle
+include 'souplib/backend_js/expressions.soup' as base_exprs
+include 'souplib/backend_js/statements.soup' as base_stmts
+include 'souplib/backend_js/methods.soup' as methods
+include 'souplib/backend_js/mangle.soup' as mangle
 
 class LoopItem: base_exprs.AtomicItem
     ctor(loopId) super()

@@ -1,7 +1,7 @@
 include 'errors.soup' as errors
 include 'misc.soup' as misc
-include 'parse/clauses.soup' as cla
-include 'parse/tokenize.soup' as tknz
+include 'souplib/parse/clauses.soup' as cla
+include 'souplib/parse/tokenize.soup' as tknz
 
 class Builder
     ctor(file)

@@ -1,6 +1,6 @@
-include 'resolve/scope.soup' as sc
-include 'backend_js/function.soup' as backend
-include 'backend_js/expressions.soup' as backend_exprs
+include 'souplib/resolve/scope.soup' as sc
+include 'souplib/backend_js/function.soup' as backend
+include 'souplib/backend_js/expressions.soup' as backend_exprs
 
 export class SyncFunc
     ctor(pos, name, params, body)

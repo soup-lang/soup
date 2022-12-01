@@ -1,7 +1,7 @@
 include 'errors.soup' as errors
-include 'parse/expressions.soup' as base
-include 'resolve/macros.soup' as resolve
-include 'resolve/expressions.soup' as resolve_exprs
+include 'souplib/parse/expressions.soup' as base
+include 'souplib/resolve/macros.soup' as resolve
+include 'souplib/resolve/expressions.soup' as resolve_exprs
 
 class Macro: base.Expression
     ctor(pos, image) super(pos)

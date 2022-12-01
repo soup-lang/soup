@@ -1,6 +1,6 @@
 include 'errors.soup' as errors
 include 'test/assert.soup' as assert
-include 'parse/build.soup' as build
+include 'souplib/parse/build.soup' as build
 
 export func run()
     describe('sub block automations', %)

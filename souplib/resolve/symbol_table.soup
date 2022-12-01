@@ -1,7 +1,7 @@
 include 'errors.soup' as errors
 include 'misc.soup' as misc
-include 'backend_js/expressions.soup' as backend
-include 'backend_js/loop.soup' as backend_loop
+include 'souplib/backend_js/expressions.soup' as backend
+include 'souplib/backend_js/loop.soup' as backend_loop
 
 class Symbol
     ctor(defPos)

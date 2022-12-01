@@ -1,6 +1,6 @@
 include 'errors.soup' as errors
 include 'test/assert.soup' as assert
-include 'parse/tokenize.soup' as t
+include 'souplib/parse/tokenize.soup' as t
 
 fs: require('fs')
 
@@ -154,7 +154,7 @@ export func run(%%)
 
     if true
         it('strings', %done)
-        r: t.tokenize(fs.readFile('test/parse/test-sample-str.txt', %%), null, 1)
+        r: t.tokenize(fs.readFile('test/souplib/parse/test-sample-str.txt', %%), null, 1)
         assert.not(errors.hasError())
         assert.eq(4, r.tokens.length)
         assert.eq(1, r.lineInc)

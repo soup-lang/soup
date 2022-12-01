@@ -1,7 +1,7 @@
 include 'errors.soup' as errors
 include 'test/assert.soup' as assert
 include 'test/utils.soup' as utils
-include 'parse/build.soup' as build
+include 'souplib/parse/build.soup' as build
 
 buildForAll: utils.buildForAll
 

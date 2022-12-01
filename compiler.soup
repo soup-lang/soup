@@ -1,6 +1,6 @@
 include 'errors.soup' as errors
-include 'parse/build.soup' as parse
-include 'resolve/scope.soup' as scope
+include 'souplib/parse/build.soup' as parse
+include 'souplib/resolve/scope.soup' as scope
 
 fs: require('fs')
 

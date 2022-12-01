@@ -1,50 +1,50 @@
 if true
     describe('parse', %)
     if true
-        include 'test/parse/tokenize.soup' as t
+        include 'test/souplib/parse/tokenize.soup' as t
         t.run(%%)
     if true
-        include 'test/parse/expr_automations.soup' as t
+        include 'test/souplib/parse/expr_automations.soup' as t
         t.run()
     if true
-        include 'test/parse/stmt_automations.soup' as t
+        include 'test/souplib/parse/stmt_automations.soup' as t
         t.run()
     if true
-        include 'test/parse/sub_block_automations.soup' as t
+        include 'test/souplib/parse/sub_block_automations.soup' as t
         t.run()
     if true
-        include 'test/parse/expressions.soup' as t
+        include 'test/souplib/parse/expressions.soup' as t
         t.run()
     if true
-        include 'test/parse/func.soup' as t
+        include 'test/souplib/parse/func.soup' as t
         t.run()
     if true
-        include 'test/parse/class.soup' as t
+        include 'test/souplib/parse/class.soup' as t
         t.run()
 
 if true
     describe('resolve', %)
     if true
-        include 'test/resolve/symbol_table.soup' as t
+        include 'test/souplib/resolve/symbol_table.soup' as t
         t.run()
     if true
-        include 'test/resolve/literal.soup' as t
+        include 'test/souplib/resolve/literal.soup' as t
         t.run()
     if true
-        include 'test/resolve/statements.soup' as t
+        include 'test/souplib/resolve/statements.soup' as t
         t.run(%%)
     if true
-        include 'test/resolve/pipeline.soup' as t
+        include 'test/souplib/resolve/pipeline.soup' as t
         t.run(%%)
     if true
-        include 'test/resolve/function.soup' as t
+        include 'test/souplib/resolve/function.soup' as t
         t.run(%%)
     if true
-        include 'test/resolve/class.soup' as t
+        include 'test/souplib/resolve/class.soup' as t
         t.run(%%)
     if true
-        include 'test/resolve/macros.soup' as t
+        include 'test/souplib/resolve/macros.soup' as t
         t.run(%%)
     if true
-        include 'test/resolve/scope_include.soup' as t
+        include 'test/souplib/resolve/scope_include.soup' as t
         t.run(%%)

@@ -1,6 +1,6 @@
 include 'misc.soup' as misc
-include 'backend_js/mangle.soup' as mangle
-include 'backend_js/statements.soup' as stmts
+include 'souplib/backend_js/mangle.soup' as mangle
+include 'souplib/backend_js/statements.soup' as stmts
 
 export class Expression
     func mayThrow()

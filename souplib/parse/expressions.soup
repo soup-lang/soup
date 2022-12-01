@@ -1,10 +1,10 @@
 include 'errors.soup' as errors
 include 'globals.soup' as g
 include 'language.soup' as lang
-include 'parse/utils.soup' as utils
-include 'resolve/expressions.soup' as resolve
-include 'resolve/statements.soup' as resolve_stmts
-include 'resolve/pipeline.soup' as resolve_pipe
+include 'souplib/parse/utils.soup' as utils
+include 'souplib/resolve/expressions.soup' as resolve
+include 'souplib/resolve/statements.soup' as resolve_stmts
+include 'souplib/resolve/pipeline.soup' as resolve_pipe
 
 export class Expression
     ctor(pos)

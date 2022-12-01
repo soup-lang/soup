@@ -1,6 +1,6 @@
 include 'globals.soup' as g
-include 'parse/statements.soup' as base
-include 'resolve/class.soup' as resolve
+include 'souplib/parse/statements.soup' as base
+include 'souplib/resolve/class.soup' as resolve
 
 export class Constructor
     ctor(pos, params, superArgs, body)

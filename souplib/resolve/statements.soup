@@ -1,11 +1,11 @@
 include 'errors.soup' as errors
 include 'misc.soup' as misc
-include 'resolve/scope.soup' as sc
-include 'backend_js/statements.soup' as backend
-include 'backend_js/expressions.soup' as backend_exprs
-include 'backend_js/function.soup' as backend_funcs
-include 'backend_js/loop.soup' as backend_loop
-include 'backend_js/methods.soup' as backend_methods
+include 'souplib/resolve/scope.soup' as sc
+include 'souplib/backend_js/statements.soup' as backend
+include 'souplib/backend_js/expressions.soup' as backend_exprs
+include 'souplib/backend_js/function.soup' as backend_funcs
+include 'souplib/backend_js/loop.soup' as backend_loop
+include 'souplib/backend_js/methods.soup' as backend_methods
 
 export class Statement
     ctor(pos)

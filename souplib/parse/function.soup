@@ -1,5 +1,5 @@
-include 'parse/utils.soup' as utils
-include 'resolve/function.soup' as resolve
+include 'souplib/parse/utils.soup' as utils
+include 'souplib/resolve/function.soup' as resolve
 
 export class Func
     ctor(pos, name, paramsExprs, body)

@@ -1,5 +1,5 @@
 include 'test/assert.soup' as assert
-include 'test/resolve/utils.soup' as utils
+include 'test/souplib/resolve/utils.soup' as utils
 
 buildForAll: utils.buildForAll
 

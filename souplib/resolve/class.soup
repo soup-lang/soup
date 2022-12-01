@@ -1,8 +1,8 @@
 include 'errors.soup' as errors
-include 'resolve/statements.soup' as base
-include 'resolve/scope.soup' as sc
-include 'backend_js/class.soup' as backend
-include 'backend_js/statements.soup' as backend_stmts
+include 'souplib/resolve/statements.soup' as base
+include 'souplib/resolve/scope.soup' as sc
+include 'souplib/backend_js/class.soup' as backend
+include 'souplib/backend_js/statements.soup' as backend_stmts
 
 class SuperConstructorCall
     ctor(pos, clsName, args)

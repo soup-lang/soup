@@ -1,9 +1,9 @@
 include 'errors.soup' as errors
 include 'test/assert.soup' as assert
-include 'parse/tokenize.soup' as tknz
-include 'parse/expressions.soup' as exprs
-include 'parse/clauses.soup' as cla
-include 'parse/automation.soup' as t
+include 'souplib/parse/tokenize.soup' as tknz
+include 'souplib/parse/expressions.soup' as exprs
+include 'souplib/parse/clauses.soup' as cla
+include 'souplib/parse/automation.soup' as t
 
 func build(source)
     c: cla.GlobalClause(null)

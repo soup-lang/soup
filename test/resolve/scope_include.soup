@@ -1,8 +1,8 @@
 include 'errors.soup' as errors
 include 'test/assert.soup' as assert
 include 'test/utils.soup' as utils
-include 'parse/build.soup' as parse
-include 'resolve/scope.soup' as scope
+include 'souplib/parse/build.soup' as parse
+include 'souplib/resolve/scope.soup' as scope
 
 class FakeScope: scope.GlobalScope
     ctor(sources) super()

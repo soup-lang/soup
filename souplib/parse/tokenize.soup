@@ -1,7 +1,7 @@
 include 'errors.soup' as errors
 include 'misc.soup' as misc
-include 'parse/expressions.soup' as exprs
-include 'parse/macros.soup' as macros
+include 'souplib/parse/expressions.soup' as exprs
+include 'souplib/parse/macros.soup' as macros
 
 class Pattern
     ctor(pattern, accept, ignore, stop)

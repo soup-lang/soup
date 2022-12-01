@@ -1,11 +1,11 @@
 include 'misc.soup' as misc
 include 'errors.soup' as errors
-include 'resolve/expressions.soup' as base
-include 'resolve/statements.soup' as stmts
-include 'resolve/scope.soup' as sc
-include 'backend_js/loop.soup' as backend
-include 'backend_js/statements.soup' as backend_stmts
-include 'backend_js/methods.soup' as backend_methods
+include 'souplib/resolve/expressions.soup' as base
+include 'souplib/resolve/statements.soup' as stmts
+include 'souplib/resolve/scope.soup' as sc
+include 'souplib/backend_js/loop.soup' as backend
+include 'souplib/backend_js/statements.soup' as backend_stmts
+include 'souplib/backend_js/methods.soup' as backend_methods
 
 export class Pipeline: base.Expression
     ctor(pos, arr, body) super(pos)

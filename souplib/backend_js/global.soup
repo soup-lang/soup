@@ -1,6 +1,6 @@
 include 'misc.soup' as misc
 include 'globals.soup' as _g
-include 'backend_js/mangle.soup' as mangle
+include 'souplib/backend_js/mangle.soup' as mangle
 
 g: _g.g()
 
